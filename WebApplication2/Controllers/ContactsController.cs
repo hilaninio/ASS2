@@ -33,27 +33,16 @@ namespace WebApplication2.Controllers
             return Json(user.contacts.get(id2));
         }
 
-        public class Payload
-        {
-            public string Id { get; set; }
-            public string Name { get; set; }
-            public string Server { get; set; }
-            public string UserID { get; set; }
-        }
-
         [HttpPost]
-        public ActionResult GetPost1([FromBody] Payload data)
+        public ActionResult GetPost(string userID, [Bind("id,name,server")] Contact contact)
         {
-            Contact contact= new Contact();
-            contact.Server= data.Server;
-            contact.Name= data.Name;
-            contact.Id= data.Id;
             contact.MessegesService = new messegesService();
             contact.LastDate = DateTime.Now;
             contact.Last = "";
-            User user = Uservice.get(data.UserID);
+            User user = Uservice.get(userID);
+
             user.contacts.Add(contact);
-            return Json(contact);
+            return Json(Uservice);
         }
 
         [HttpDelete("{id}")]
